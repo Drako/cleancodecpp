@@ -1,0 +1,11 @@
+# cmake
+build/
+cmake-build-*/
+
+# intellij
+*.iml
+.idea/*
+!.idea/codeStyles/
+
+# macos
+.DS_Store
