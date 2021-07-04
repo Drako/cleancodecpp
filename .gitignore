@@ -7,5 +7,9 @@ cmake-build-*/
 .idea/*
 !.idea/codeStyles/
 
+# QtCreator
+CMakeLists.txt.user
+
 # macos
 .DS_Store
+
