@@ -51,10 +51,10 @@ In C++ there are no interfaces. But C++ has multiple inheritance, so we can tech
 
  * KISS (Keep It Simple, Stupid)
  * DRY (Don't Repeat Yourself)
+ * Rule of 3
  * YAGNI (You Ain't Gonna Need It)
  * Composition over inheritance
  * Readability counts
- * Rule of 3
  * Principle of least surprise
 
 # Best practices & Idioms
