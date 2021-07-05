@@ -48,8 +48,10 @@ TEST_P(ListEmptySizeCorelationTestFixture, only_size_0_is_empty)
 {
     std::size_t const size = GetParam();
     List<char> letters;
-    for (std::size_t n = size; n--;)
+
+    for (std::size_t n = size; n--;) {
         letters.push_front('%');
+    }
 
     EXPECT_EQ(letters.size(), size);
     EXPECT_EQ(letters.empty(), size == 0u);

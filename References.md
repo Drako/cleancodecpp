@@ -25,3 +25,7 @@
 
 * [Clean coders](https://www.cleancoders.com/)
 * [C++ Weekly](https://www.youtube.com/watch?v=EJtqHLvAIZE&list=PLs3KjaCtOwSZ2tbuV1hx8Xz-rFZTan2J1)
+
+## Other
+
+* [CMake: FetchContent (for dependencies)](https://cmake.org/cmake/help/latest/module/FetchContent.html)
