@@ -3,6 +3,7 @@ add_executable(examples
     list.hxx list_tests.cxx
     roman_numeral_converter.cxx roman_numeral_converter.hxx roman_numeral_converter_tests.cxx
     bowling_game.cxx bowling_game.hxx bowling_game_tests.cxx
+    compile_time_fizzbuzz.cxx
     day1/rule_of_0_3_5.cxx
     day1/shared_ptr_workings.cxx
     day1/surprise_remove_does_not_remove.cxx

@@ -4,6 +4,7 @@
 #include <array>
 #include <iterator>
 #include <tuple>
+#include <unordered_map>
 
 namespace {
 using namespace std;
@@ -49,5 +50,18 @@ std::string workshop::to_roman(int value)
 
 int workshop::from_roman(std::string_view const value)
 {
-    return 0;
+    static std::unordered_map<std::string, int> const reverse_mapping = []() {
+        std::unordered_map<std::string, int> rmap;
+        for (int n = 1; n <= 3999; ++n) {
+            rmap[to_roman(n)] = n;
+        }
+        return rmap;
+    }();
+
+    auto const it = reverse_mapping.find(std::string { value });
+    if (it == reverse_mapping.end()) {
+        throw std::invalid_argument { "value is not a valid Roman numeral" };
+    }
+
+    return it->second;
 }

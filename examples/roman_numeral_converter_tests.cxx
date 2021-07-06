@@ -7,15 +7,6 @@ namespace t = testing;
 #include <tuple>
 namespace s = std;
 
-// Fixtures
-
-class InvalidIntegerFixture : public t::TestWithParam<int> {
-};
-
-using ConversionParams = s::tuple<int, char const*>;
-class RomanNumeralConversionFixture : public t::TestWithParam<ConversionParams> {
-};
-
 // Test Funktionen
 using InvalidRomanNumeralFixture = t::TestWithParam<char const*>;
 TEST_P(InvalidRomanNumeralFixture, throws_invalid_argument)
@@ -23,10 +14,14 @@ TEST_P(InvalidRomanNumeralFixture, throws_invalid_argument)
     ASSERT_THROW(w::from_roman(GetParam()), std::invalid_argument);
 }
 
+using InvalidIntegerFixture = t::TestWithParam<int>;
 TEST_P(InvalidIntegerFixture, throws_invalid_argument)
 {
     ASSERT_THROW(w::to_roman(GetParam()), std::invalid_argument);
 }
+
+using ConversionParams = s::tuple<int, char const*>;
+using RomanNumeralConversionFixture = t::TestWithParam<ConversionParams>;
 
 TEST_P(RomanNumeralConversionFixture, converts_to_roman)
 {
@@ -52,7 +47,7 @@ TEST_P(RomanNumeralConversionFixture, converts_from_roman)
 INSTANTIATE_TEST_SUITE_P(
     RomanNumeralConverterTest,
     InvalidRomanNumeralFixture,
-    t::Values("", "A", "ABC", "alpha", "mx", "23", "M!"));
+    t::Values("", "A", "ABC", "alpha", "mx", "23", "M!", "", "XF", "MMS", "IIX", "IXI", "IM", "IIM", "IIIM", "IIII", "IIIII", "IIIIIIII", "LC", "LL", "CCCC", "MMMM", "MIM", "XM", "MXM", "XXC", "CXLICMIM", "XCX", "MXCX", "XCXCXC", "MIMIMI", "XCXL"));
 
 INSTANTIATE_TEST_SUITE_P(
     RomanNumeralConverterTest,
