@@ -1,8 +1,13 @@
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <ostream>
 #include <sstream>
+#include <string>
 #include <string_view>
+
+using namespace std::literals::string_literals;
+using namespace std::literals::string_view_literals;
 
 class OutputDevice {
 public:
@@ -13,6 +18,26 @@ public:
      * @param message
      */
     virtual void print_line(std::string_view message) = 0;
+};
+
+class MockOutputDevice : public OutputDevice {
+public:
+    MOCK_METHOD(void, print_line, (std::string_view message));
+
+    void record_output()
+    {
+        ON_CALL(*this, print_line).WillByDefault([this](std::string_view message) {
+            recorder << message << "\n";
+        });
+    }
+
+    std::string recorded_output() const
+    {
+        return recorder.str();
+    }
+
+private:
+    std::ostringstream recorder;
 };
 
 class StreamPrinter final : public OutputDevice {
@@ -67,3 +92,50 @@ public:
         Console::print_line(upper_case);
     }
 };
+
+class Greeter {
+public:
+    Greeter(OutputDevice* out)
+        : out { out }
+    {
+    }
+
+    void greet(std::string_view whom)
+    {
+        std::string message { "Hello, " };
+        message.append(std::begin(whom), std::end(whom));
+        out->print_line(message);
+    }
+
+private:
+    OutputDevice* out;
+};
+
+namespace c {
+
+static const int FOO = 42;
+}
+
+namespace a {
+namespace b {
+    namespace c {
+        static const int FOO = 23;
+    }
+
+    namespace d {
+        static const int BAR = ::c::FOO;
+    }
+}
+}
+
+TEST(GreeterTest, says_hello)
+{
+    MockOutputDevice out;
+    out.record_output();
+    EXPECT_CALL(out, print_line("Hello, world"sv));
+
+    Greeter greeter { &out };
+    greeter.greet("world");
+
+    EXPECT_EQ("Hello, world\n"s, out.recorded_output());
+}

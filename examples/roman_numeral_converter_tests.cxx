@@ -7,8 +7,8 @@ namespace t = testing;
 #include <tuple>
 namespace s = std;
 
-class InvalidRomanNumeralFixture : public t::TestWithParam<char const*> {
-};
+// Fixtures
+
 class InvalidIntegerFixture : public t::TestWithParam<int> {
 };
 
@@ -16,6 +16,8 @@ using ConversionParams = s::tuple<int, char const*>;
 class RomanNumeralConversionFixture : public t::TestWithParam<ConversionParams> {
 };
 
+// Test Funktionen
+using InvalidRomanNumeralFixture = t::TestWithParam<char const*>;
 TEST_P(InvalidRomanNumeralFixture, throws_invalid_argument)
 {
     ASSERT_THROW(w::from_roman(GetParam()), std::invalid_argument);
@@ -46,10 +48,11 @@ TEST_P(RomanNumeralConversionFixture, converts_from_roman)
     ASSERT_EQ(w::from_roman(roman), value);
 }
 
+// Test Daten
 INSTANTIATE_TEST_SUITE_P(
     RomanNumeralConverterTest,
     InvalidRomanNumeralFixture,
-    t::Values("A", "ABC", "alpha", "mx", "23", "M!"));
+    t::Values("", "A", "ABC", "alpha", "mx", "23", "M!"));
 
 INSTANTIATE_TEST_SUITE_P(
     RomanNumeralConverterTest,
