@@ -49,11 +49,6 @@ TEST(FiddleTest, filtering)
     EXPECT_EQ((std::vector { 2, 4, 6 }), even);
 }
 
-TEST(FiddleTest, fiddling_around)
-{
-    EXPECT_EQ(6 * 7, 42);
-}
-
 #include <vector>
 
 /*void foo()
