@@ -4,6 +4,7 @@
 * [C++ Reference](https://en.cppreference.com/w/)
 * [C++ Compiler Support](https://en.cppreference.com/w/cpp/compiler_support)
 * [Predefined Compiler Macros](https://sourceforge.net/p/predef/wiki/Home/)
+* [Compiler Explorer](https://godbo.lt/)
 
 ## Testing with C++
 * [gtest/gmock - Complete testing & mocking framework](https://github.com/google/googletest)
@@ -15,6 +16,7 @@
 * [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 * [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
 * [Doxygen](https://www.doxygen.nl/index.html)
+* [Rule of 3/5/0](https://en.cppreference.com/w/cpp/language/rule_of_three)
 
 ## Books
 

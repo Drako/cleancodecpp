@@ -25,9 +25,22 @@ TEST(ListTest, multi_value_list)
     EXPECT_EQ(numbers.size(), 3u);
 }
 
+/*
+TEST(ListTest, only_size_0_is_empty)
+{
+    List<int> numbers;
+    EXPECT_TRUE(numbers.empty());
+    for (int n = 0; n < 10; ++n) {
+        EXPECT_EQ(numbers.size(), n);
+        numbers.push_front(n);
+        EXPECT_FALSE(numbers.empty());
+    }
+}
+*/
+
 TEST(ListTest, front)
 {
-    List<char> letters;
+    List<char> letters {};
     EXPECT_TRUE(letters.empty());
     EXPECT_EQ(letters.size(), 0u);
 

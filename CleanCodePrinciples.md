@@ -14,6 +14,8 @@ There can be similar concerns expressed for data (e.g. dependencies of data arti
 
 A class should have one and only one reason to change.
 
+Iterator
+
 ## Open/Closed Principle (OCP)
 
 You should be able to extend a class' behaviour without modifying it.
@@ -59,7 +61,7 @@ In C++ there are no interfaces. But C++ has multiple inheritance, so we can tech
 
 # Best practices & Idioms
 
- * RAII
+ * RAII - Resource Acquisition Is Initialization
  * Const Correctness
  * Avoid raw new
  * Rule of 3/5/0

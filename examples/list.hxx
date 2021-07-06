@@ -2,52 +2,81 @@
 
 #include <cstddef>
 
+#include <initializer_list>
+#include <memory>
 #include <stdexcept>
+#include <type_traits>
 
 namespace workshop {
 
 template <typename T>
 class List {
+    struct Item {
+        T value;
+        Item* next;
+    };
+
 public:
-    inline List(...)
+    List() = default;
+
+    inline List(std::initializer_list<T> const& values)
     {
-        // TODO: replace with actual constructor... this one is only to make the tests compile
+        if (values.size() == 0) {
+            return;
+        }
+
+        for (auto it = values.end() - 1; it >= values.begin(); --it) {
+            push_front(*it);
+        }
     }
+
+    inline ~List()
+    {
+        while (!empty()) {
+            pop_front();
+        }
+    }
+
+    List(List const&) = delete;
+    List& operator=(List const&) = delete;
 
     inline bool empty() const
     {
-        // TODO: implement
-        return true;
+        return items == 0;
     }
 
     inline std::size_t size() const
     {
-        // TODO: implement
-        return 0u;
+        return items;
     }
 
     inline void push_front(T const& item)
     {
-        // TODO: implement
+        root = new Item { item, root };
+        ++items;
     }
 
     inline T& front()
     {
-        // TODO: implement
-        static T dummy {};
-        return dummy;
+        return root->value;
     }
 
-    inline T front() const
+    inline T const& front() const
     {
-        // TODO: implement
-        return {};
+        return root->value;
     }
 
     inline void pop_front()
     {
-        // TODO: implement
+        auto const old_root = root;
+        root = root->next;
+        --items;
+        delete old_root;
     }
+
+private:
+    Item* root { nullptr };
+    std::size_t items { 0u };
 };
 
 }

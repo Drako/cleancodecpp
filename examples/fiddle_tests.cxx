@@ -1,127 +1,60 @@
 #include <gtest/gtest.h>
 
 #include <algorithm>
+#include <atomic>
 #include <cctype>
+#include <cstdio>
+#include <iomanip>
 #include <iostream>
+#include <iterator>
+#include <memory>
+#include <mutex>
+#include <set>
 #include <string_view>
+#include <vector>
+
+std::weak_ptr<int> a()
+{
+    std::unique_ptr<int> { (int*)0xFFFFFFFFF };
+
+    std::shared_ptr<int> one = std::make_shared<int>(42);
+    std::shared_ptr<int> two { one };
+
+    std::weak_ptr<int> sub_two { two };
+    auto ptr = sub_two.lock();
+
+    return sub_two;
+}
+
+std::mutex mtx;
+
+void locking()
+{
+    std::lock_guard<std::mutex> lock { mtx };
+}
+
+TEST(FiddleTest, filtering)
+{
+    std::vector<int> numbers { 1, 2, 3, 4, 5, 6 };
+
+    std::vector<int> even {};
+    //even.reserve(3u);
+    std::copy_if(
+        numbers.begin(),
+        numbers.end(),
+        std::back_inserter(even),
+        [](int n) { return n % 2 == 0; });
+    EXPECT_EQ((std::vector { 2, 4, 6 }), even);
+}
 
 TEST(FiddleTest, fiddling_around)
 {
     EXPECT_EQ(6 * 7, 42);
 }
 
-/*
-std::vector -> QVector
-std::list -> QList
-std::string -> QString
-*/
-
-class OutputDevice {
-public:
-    virtual ~OutputDevice() = default;
-
-    /**
-     * @brief print_line prints the line (somehow)
-     * @param message
-     */
-    virtual void print_line(std::string_view message) = 0;
-};
-
-class StreamPrinter final : public OutputDevice {
-public:
-    StreamPrinter(std::ostream& out)
-        : out { out }
-    {
-    }
-
-    void print_line(std::string_view message) override
-    {
-        out << message << std::endl;
-    }
-
-private:
-    std::ostream& out;
-};
-
-TEST(StreamPrinterTest, prints)
-{
-    std::ostringstream buffer;
-    StreamPrinter sp { buffer };
-
-    sp.print_line("Hello world!");
-    EXPECT_EQ(buffer.str(), "Hello world!\n");
-}
-
-struct QuickSort {
-    template <typename Container>
-    static void sort(Container& c);
-};
-struct MergeSort {
-    template <typename Container>
-    static void sort(Container& c);
-};
-
-template <typename Strategy = QuickSort>
-struct Sorter : private Strategy {
-    template <typename Container>
-    static void foo(Container& c)
-    {
-        Strategy::sort(c);
-    }
-};
-
-int main()
-{
-    std::string bar;
-    Sorter<>::foo(bar);
-
-    /*
-    Container c;
-    c.register_type<StreamPrinter>();
-    c.register_type<Foo>();
-    c.register_type<Bar>();
-    c.install(apiModule);
-
-    auto app = c.resolve<Application>();
-    auto jobHandler = c.resolve<JobHandler>();
-    */
-
-    StreamPrinter sp { std::cout };
-    //Foo foo { sp };
-    //Bar bar { foo };
-}
-
-class InputDevice {
-public:
-    virtual ~InputDevice() = default;
-
-    virtual std::string read_line() = 0;
-};
-
-class Console : public OutputDevice, public InputDevice {
-public:
-    void print_line(std::string_view message) override
-    {
-        std::cout << message << std::endl;
-    }
-};
-
-class ShoutingConsole : public Console {
-public:
-    void print_line(std::string_view message) override
-    {
-        std::string upper_case { message.begin(), message.end() };
-        std::transform(upper_case.begin(), upper_case.end(), upper_case.begin(), [](char c) {
-            return std::toupper(c);
-        });
-
-        Console::print_line(upper_case);
-    }
-};
-
 #include <vector>
 
-void foo()
+/*void foo()
 {
     int bar[23];
 
@@ -136,4 +69,4 @@ void foo()
     for (auto const element : bar) {
         ++index;
     }
-}
+}*/
