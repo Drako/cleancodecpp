@@ -7,6 +7,7 @@ add_executable(examples
     day1/shared_ptr_workings.cxx
     day1/surprise_remove_does_not_remove.cxx
     day1/composition_via_private_inheritance.cxx
-    day1/solid.cxx)
+    day1/solid.cxx
+    day1/unsorted.cxx)
 target_link_libraries(examples PRIVATE gmock_main gtest gmock)
 add_test(example_tests COMMAND examples)
