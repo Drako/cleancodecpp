@@ -3,6 +3,7 @@
 #ifndef ITEM_HXX
 #define ITEM_HXX
 
+#include <array>
 #include <ostream>
 #include <string>
 #include <unordered_map>

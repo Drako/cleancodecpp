@@ -1,35 +1,54 @@
 #include "shop.hxx"
 
 #include <algorithm>
+#include <functional>
+#include <map>
 
 namespace {
+int regularQuality(int quality, int sellIn)
+{
+    return quality - (sellIn < 0 ? 2 : 1);
+}
+
+int agedQuality(int quality, int sellIn)
+{
+    return quality + (sellIn < 0 ? 2 : 1);
+}
+
+int ticketQuality(int quality, int sellIn)
+{
+    if (sellIn < 0) {
+        return 0;
+    } else if (sellIn < 5) {
+        return quality + 3;
+    } else if (sellIn < 10) {
+        return quality + 2;
+    } else {
+        return quality + 1;
+    }
+}
+
 int calculateQuality(ItemType type, int quality, int sellIn)
 {
     if (quality < Item::MIN_QUALITY || quality > Item::MAX_QUALITY) {
         return quality;
     }
 
-    switch (type) {
-    default:
-        quality -= sellIn < 0 ? 2 : 1;
-        break;
-    case ItemType::Aged:
-        quality += sellIn < 0 ? 2 : 1;
-        break;
-    case ItemType::Ticket:
-        if (sellIn < 0) {
-            quality = 0;
-        } else if (sellIn < 5) {
-            quality += 3;
-        } else if (sellIn < 10) {
-            quality += 2;
-        } else if (sellIn < 15) {
-            ++quality;
-        }
-        break;
+    static std::map<ItemType, std::function<int(int, int)>> const updaters {
+        { ItemType::Regular, &regularQuality },
+        { ItemType::Aged, &agedQuality },
+        { ItemType::Ticket, &ticketQuality },
+    };
+
+    auto const updater = updaters.find(type);
+    if (updater == updaters.end()) {
+        throw std::invalid_argument { "Unsupported type!" };
     }
 
-    return std::clamp(quality, Item::MIN_QUALITY, Item::MAX_QUALITY);
+    return std::clamp(
+        updater->second(quality, sellIn),
+        Item::MIN_QUALITY,
+        Item::MAX_QUALITY);
 }
 }
 

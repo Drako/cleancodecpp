@@ -1,5 +1,10 @@
 add_subdirectory(gilded-rose)
 
+find_package(Threads REQUIRED)
+
+add_executable(thread_example day3/threads.cxx)
+target_link_libraries(thread_example PRIVATE Threads::Threads)
+
 add_executable(examples
     fiddle_tests.cxx
     list.hxx list_tests.cxx
@@ -12,6 +17,10 @@ add_executable(examples
     day1/solid.cxx
     day1/unsorted.cxx
     day2/templates.cxx
-    day2/compile_time_fizzbuzz.cxx)
-target_link_libraries(examples PRIVATE gmock_main gtest gmock HippoMocks)
+    day2/compile_time_fizzbuzz.cxx
+    day3/pointers.cxx)
+target_link_libraries(examples PRIVATE
+    gmock_main
+    gtest gmock
+    HippoMocks)
 add_test(example_tests COMMAND examples)

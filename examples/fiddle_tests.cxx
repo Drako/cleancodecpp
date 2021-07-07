@@ -13,7 +13,7 @@ void greet()
 
 int old_multiplicate(int a, int b)
 {
-    int product { 1 };
+    int product { 0 };
     for (int n = 0; n < b; ++n) {
         product += a;
     }
