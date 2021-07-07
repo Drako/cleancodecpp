@@ -62,6 +62,14 @@ void guest(
 
 void main()
 {
+    /*
+    auto add = [](int a, int b) { return a + b; };
+    auto add2 = [=](int b) { return add(2, b); };
+
+    // deprecated, same as add2
+    auto add2_2 = std::bind(add, 2, std::placeholders::_2);
+    */
+
     std::mutex io;
     std::array<std::mutex, 5> forks;
     std::array<std::thread, 5> guests {
