@@ -7,10 +7,21 @@ namespace t = testing;
 #include <tuple>
 namespace s = std;
 
+class RomanNumeralConverterTest : public t::Test {
+public:
+    int n {};
+};
+
+class InvalidRomanNumeralFixture
+    : public RomanNumeralConverterTest,
+      public t::WithParamInterface<char const*> {
+};
+
 // Test Funktionen
-using InvalidRomanNumeralFixture = t::TestWithParam<char const*>;
+//using InvalidRomanNumeralFixture = t::TestWithParam<char const*>;
 TEST_P(InvalidRomanNumeralFixture, throws_invalid_argument)
 {
+    int foo = n;
     ASSERT_THROW(w::from_roman(GetParam()), std::invalid_argument);
 }
 

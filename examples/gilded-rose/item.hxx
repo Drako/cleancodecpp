@@ -12,7 +12,8 @@ struct Item final {
     int quality;
 };
 
-inline std::ostream& operator << (std::ostream& os, Item const& it) {
+inline std::ostream& operator<<(std::ostream& os, Item const& it)
+{
     return os
         << "Item[name=\""
         << it.name
@@ -23,13 +24,15 @@ inline std::ostream& operator << (std::ostream& os, Item const& it) {
         << "]";
 }
 
-inline bool operator == (Item const& lhs, Item const& rhs) {
+inline bool operator==(Item const& lhs, Item const& rhs)
+{
     return lhs.name == rhs.name
         && lhs.sellIn == rhs.sellIn
         && lhs.quality == rhs.quality;
 }
 
-inline bool operator != (Item const& lhs, Item const& rhs) {
+inline bool operator!=(Item const& lhs, Item const& rhs)
+{
     return lhs.name != rhs.name
         || lhs.sellIn != rhs.sellIn
         || lhs.quality != rhs.quality;

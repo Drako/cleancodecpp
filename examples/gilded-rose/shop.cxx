@@ -1,14 +1,17 @@
 #include "shop.hxx"
 
 Shop::Shop(std::vector<Item> items)
-    : items{ std::move(items) }
-{}
+    : items { std::move(items) }
+{
+}
 
-std::vector<Item> const& Shop::getItems() const {
+std::vector<Item> const& Shop::getItems() const
+{
     return items;
 }
 
-void Shop::updateQuality() {
+void Shop::updateQuality()
+{
     for (auto& item : items) {
         if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert") {
             if (item.quality > 0) {
@@ -16,8 +19,7 @@ void Shop::updateQuality() {
                     --item.quality;
                 }
             }
-        }
-        else {
+        } else {
             if (item.quality < 50) {
                 ++item.quality;
 
@@ -49,12 +51,10 @@ void Shop::updateQuality() {
                             --item.quality;
                         }
                     }
-                }
-                else {
+                } else {
                     item.quality -= item.quality;
                 }
-            }
-            else {
+            } else {
                 if (item.quality < 50) {
                     ++item.quality;
                 }
