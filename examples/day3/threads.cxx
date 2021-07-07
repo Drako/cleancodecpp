@@ -164,7 +164,7 @@ void main()
 }
 }
 
-namespace example4 {
+namespace one_generator_many_readers {
 void generator(std::vector<int>& numbers, std::mutex& m, std::condition_variable& cv)
 {
     int a = 0;
@@ -196,6 +196,7 @@ void worker(std::vector<int>& numbers, std::mutex& m, std::condition_variable& c
             current_value = numbers.back();
             numbers.pop_back();
         }
+        std::this_thread::yield();
 
         std::cout
             << std::this_thread::get_id()
@@ -203,7 +204,7 @@ void worker(std::vector<int>& numbers, std::mutex& m, std::condition_variable& c
             << current_value
             << std::endl;
 
-        std::this_thread::sleep_for(200ms);
+        //std::this_thread::sleep_for(200ms);
     }
 }
 
@@ -230,10 +231,10 @@ void main()
 
 int main()
 {
-    //exceptions_with_async::main();
-    //dining_philosophers::main();
-    //ping_pong::main();
-    example4::main();
+    exceptions_with_async::main();
+    dining_philosophers::main();
+    ping_pong::main();
+    one_generator_many_readers::main();
 
     return 0;
 }
