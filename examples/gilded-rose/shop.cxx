@@ -1,5 +1,38 @@
 #include "shop.hxx"
 
+#include <algorithm>
+
+namespace {
+int calculateQuality(ItemType type, int quality, int sellIn)
+{
+    if (quality < Item::MIN_QUALITY || quality > Item::MAX_QUALITY) {
+        return quality;
+    }
+
+    switch (type) {
+    default:
+        quality -= sellIn < 0 ? 2 : 1;
+        break;
+    case ItemType::Aged:
+        quality += sellIn < 0 ? 2 : 1;
+        break;
+    case ItemType::Ticket:
+        if (sellIn < 0) {
+            quality = 0;
+        } else if (sellIn < 5) {
+            quality += 3;
+        } else if (sellIn < 10) {
+            quality += 2;
+        } else if (sellIn < 15) {
+            ++quality;
+        }
+        break;
+    }
+
+    return std::clamp(quality, Item::MIN_QUALITY, Item::MAX_QUALITY);
+}
+}
+
 Shop::Shop(std::vector<Item> items)
     : items { std::move(items) }
 {
@@ -13,52 +46,13 @@ std::vector<Item> const& Shop::getItems() const
 void Shop::updateQuality()
 {
     for (auto& item : items) {
-        if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert") {
-            if (item.quality > 0) {
-                if (item.name != "Sulfuras, Hand of Ragnaros") {
-                    --item.quality;
-                }
-            }
-        } else {
-            if (item.quality < 50) {
-                ++item.quality;
+        ItemType const type = typeOf(item);
 
-                if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
-                    if (item.sellIn < 11) {
-                        if (item.quality < 50) {
-                            ++item.quality;
-                        }
-                    }
-
-                    if (item.sellIn < 6) {
-                        if (item.quality < 50) {
-                            ++item.quality;
-                        }
-                    }
-                }
-            }
+        if (type == ItemType::Legendary) {
+            continue;
         }
 
-        if (item.name != "Sulfuras, Hand of Ragnaros") {
-            --item.sellIn;
-        }
-
-        if (item.sellIn < 0) {
-            if (item.name != "Aged Brie") {
-                if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
-                    if (item.quality > 0) {
-                        if (item.name != "Sulfuras, Hand of Ragnaros") {
-                            --item.quality;
-                        }
-                    }
-                } else {
-                    item.quality -= item.quality;
-                }
-            } else {
-                if (item.quality < 50) {
-                    ++item.quality;
-                }
-            }
-        }
+        --item.sellIn;
+        item.quality = ::calculateQuality(type, item.quality, item.sellIn);
     }
 }
