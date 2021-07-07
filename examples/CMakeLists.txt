@@ -1,3 +1,5 @@
+add_subdirectory(gilded-rose)
+
 add_executable(examples
     fiddle_tests.cxx
     list.hxx list_tests.cxx
