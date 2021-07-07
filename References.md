@@ -17,6 +17,7 @@
 * [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
 * [Doxygen](https://www.doxygen.nl/index.html)
 * [Rule of 3/5/0](https://en.cppreference.com/w/cpp/language/rule_of_three)
+* [Fold Expressions](https://en.cppreference.com/w/cpp/language/fold)
 
 ## Books
 

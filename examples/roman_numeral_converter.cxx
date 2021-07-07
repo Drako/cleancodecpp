@@ -50,6 +50,7 @@ std::string workshop::to_roman(int value)
 
 int workshop::from_roman(std::string_view const value)
 {
+    // IIFE - Immediately Invoked Function Expression
     static std::unordered_map<std::string, int> const reverse_mapping = []() {
         std::unordered_map<std::string, int> rmap;
         for (int n = 1; n <= 3999; ++n) {
