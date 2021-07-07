@@ -13,5 +13,5 @@ add_executable(examples
     day1/unsorted.cxx
     day2/templates.cxx
     day2/compile_time_fizzbuzz.cxx)
-target_link_libraries(examples PRIVATE gmock_main gtest gmock)
+target_link_libraries(examples PRIVATE gmock_main gtest gmock HippoMocks)
 add_test(example_tests COMMAND examples)

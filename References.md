@@ -18,6 +18,7 @@
 * [Doxygen](https://www.doxygen.nl/index.html)
 * [Rule of 3/5/0](https://en.cppreference.com/w/cpp/language/rule_of_three)
 * [Fold Expressions](https://en.cppreference.com/w/cpp/language/fold)
+* [Standard C++ Threads](https://en.cppreference.com/w/cpp/thread)
 
 ## Books
 
@@ -32,3 +33,4 @@
 ## Other
 
 * [CMake: FetchContent (for dependencies)](https://cmake.org/cmake/help/latest/module/FetchContent.html)
+* [Code Dojos & Katas](https://ccd-school.de/coding-dojo/)
