@@ -165,38 +165,59 @@ void main()
 }
 
 namespace one_generator_many_readers {
-void generator(std::vector<int>& numbers, std::mutex& m, std::condition_variable& cv)
+class Buffer {
+public:
+    void add_values(int a, int b, int c, int d)
+    {
+        std::unique_lock lock { m };
+        numbers.push_back(a);
+        numbers.push_back(b);
+        numbers.push_back(c);
+        numbers.push_back(d);
+        lock.unlock();
+        cv.notify_all();
+    }
+
+    int get_next_value()
+    {
+        std::unique_lock lock { m };
+        cv.wait(lock, [this] {
+            return !numbers.empty();
+        });
+
+        int current_value = numbers.back();
+        numbers.pop_back();
+
+        return current_value;
+    }
+
+private:
+    std::vector<int> numbers;
+    std::mutex m;
+    std::condition_variable cv;
+};
+
+void generator(Buffer& buffer)
 {
     int a = 0;
     int b = 1;
     for (int x = 0; x < 5; ++x) {
-        std::unique_lock lock { m };
+        std::array<int, 4> numbers;
         for (int y = 0; y < 4; ++y) {
+            numbers[y] = a;
 
-            numbers.push_back(a);
             int const tmp = a;
             a = b;
             b = tmp + b;
         }
-        lock.unlock();
-        cv.notify_all();
+        buffer.add_values(numbers[0], numbers[1], numbers[2], numbers[3]);
     }
 }
 
-void worker(std::vector<int>& numbers, std::mutex& m, std::condition_variable& cv)
+void worker(Buffer& buffer)
 {
     for (int n = 0; n < 5; ++n) {
-        int current_value;
-        {
-            std::unique_lock lock { m };
-            cv.wait(lock, [&numbers] {
-                return !numbers.empty();
-            });
-
-            current_value = numbers.back();
-            numbers.pop_back();
-        }
-        std::this_thread::yield();
+        int current_value = buffer.get_next_value();
 
         std::cout
             << std::this_thread::get_id()
@@ -210,16 +231,14 @@ void worker(std::vector<int>& numbers, std::mutex& m, std::condition_variable& c
 
 void main()
 {
-    std::vector<int> numbers;
-    std::mutex m;
-    std::condition_variable cv;
+    Buffer buffer;
 
-    std::thread gen { generator, std::ref(numbers), std::ref(m), std::ref(cv) };
+    std::thread gen { generator, std::ref(buffer) };
     std::array<std::thread, 4> workers {
-        std::thread { worker, std::ref(numbers), std::ref(m), std::ref(cv) },
-        std::thread { worker, std::ref(numbers), std::ref(m), std::ref(cv) },
-        std::thread { worker, std::ref(numbers), std::ref(m), std::ref(cv) },
-        std::thread { worker, std::ref(numbers), std::ref(m), std::ref(cv) },
+        std::thread { worker, std::ref(buffer) },
+        std::thread { worker, std::ref(buffer) },
+        std::thread { worker, std::ref(buffer) },
+        std::thread { worker, std::ref(buffer) },
     };
 
     gen.join();
