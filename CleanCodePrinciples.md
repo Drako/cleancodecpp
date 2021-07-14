@@ -14,8 +14,6 @@ There can be similar concerns expressed for data (e.g. dependencies of data arti
 
 A class should have one and only one reason to change.
 
-Iterator
-
 ## Open/Closed Principle (OCP)
 
 You should be able to extend a class' behaviour without modifying it.
@@ -48,6 +46,11 @@ Objects of a superclass should be replaceable by objects of a subclass without b
 In C++ there are no interfaces. But C++ has multiple inheritance, so we can technically derive from multiple pure virtual base classes.
 
 ## Dependency Inversion Principle (DIP)
+
+Higher level modules should not depend on lower level modules.
+Both should depend on abstractions.
+Abstractions should not depend on details.
+Details should depend on abstractions.
 
 # Generic Rules
 

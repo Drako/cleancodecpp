@@ -13,3 +13,5 @@ CMakeLists.txt.user
 # macos
 .DS_Store
 
+# Visual Studio
+.vs/
