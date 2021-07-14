@@ -1,7 +1,9 @@
 #include "GuessTheNumber.hxx"
+#include "StdRandomNumberGenerator.hxx"
 
 int main() {
-	GuessTheNumber game{};
+	StdRandomNumberGenerator rng;
+	GuessTheNumber game{rng};
 	game.run();
 	return 0;
 }
