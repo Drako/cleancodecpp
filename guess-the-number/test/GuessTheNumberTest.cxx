@@ -6,4 +6,5 @@
 TEST(GuessTheNumberTest, theGameWorks) {
 	GuessTheNumber game{};
 	// now how do you test that?
+	EXPECT_EQ(42, 6 * 7);
 }
