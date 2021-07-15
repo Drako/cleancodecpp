@@ -9,6 +9,7 @@ enum {
 using Input = Item;
 using Expected = Item;
 using Parameters = std::tuple<Input, Expected>;
+// using Parameters = std::tuple<Input, std::vector<Expected>>;
 
 struct GildedRoseTest : ::testing::TestWithParam<Parameters> {
 	static Item updateItem(Item const& original, int days = 1)
@@ -39,18 +40,36 @@ TEST_F(GildedRoseTest, sellInAndQualityAreLoweredAfterEachDay) {
 
 TEST_P(GildedRoseTest, specialItemsAreUpdatedAsSpecified)
 {
-	auto const[input, expected] = GetParam();
+	auto const [input, expected] = GetParam();
 	EXPECT_EQ(expected, updateItem(input));
+	/*Shop shop{ std::vector<Item>{input} };
+	for (auto const& expected : expecteds) {
+		shop.updateQuality();
+		EXPECT_EQ(expected, shop.getItems().front());
+	}*/
 }
 
 INSTANTIATE_TEST_SUITE_P(
 	GildedRoseTest,
 	GildedRoseTest,
 	::testing::Values(
+		/*
 		Parameters{
 			Item { "Sulfuras, Hand of Ragnaros", 0, LEGENDARY_QUALITY },
-			Item { "Sulfuras, Hand of Ragnaros", 0, LEGENDARY_QUALITY }
+			std::vector<Item>{
+				Item { "Sulfuras, Hand of Ragnaros", 0, LEGENDARY_QUALITY },
+				Item { "Sulfuras, Hand of Ragnaros", 0, LEGENDARY_QUALITY },
+			},
 		},
+		Parameters{
+			Item { "dummy", -1, 10 },
+			std::vector<Item>{
+				Item { "dummy", -2, 8 },
+				Item { "dummy", -3, 6 },
+				Item { "dummy", -4, 4 },
+			},
+		}
+		*/
 		Parameters{
 			Item { "Aged Brie", 2, 0 },
 			Item { "Aged Brie", 1, 1 }
