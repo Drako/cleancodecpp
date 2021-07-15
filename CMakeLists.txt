@@ -13,3 +13,5 @@ enable_testing()
 
 add_subdirectory(guess-the-number)
 add_subdirectory(gilded-rose)
+add_subdirectory(roman-numeral-converter)
+add_subdirectory(bowling-game)

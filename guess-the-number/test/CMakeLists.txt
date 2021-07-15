@@ -9,4 +9,4 @@ target_link_libraries(GuessTheNumberTests PRIVATE
 	CONAN_PKG::gtest
 )
 
-add_test(NAME tests COMMAND GuessTheNumberTests)
+add_test(NAME GuessTheNumberTests COMMAND GuessTheNumberTests)

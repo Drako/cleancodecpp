@@ -1,0 +1,7 @@
+add_executable(RomanNumeralConverterTests
+	roman_numeral_converter.cxx roman_numeral_converter.hxx
+	roman_numeral_converter_tests.cxx
+)
+target_link_libraries(RomanNumeralConverterTests PRIVATE CONAN_PKG::gtest)
+
+add_test(NAME RomanNumeralConverterTests COMMAND RomanNumeralConverterTests)
