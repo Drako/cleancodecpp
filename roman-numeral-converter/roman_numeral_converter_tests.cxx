@@ -11,13 +11,13 @@ namespace s = std;
 using InvalidRomanNumeralFixture = t::TestWithParam<char const*>;
 TEST_P(InvalidRomanNumeralFixture, throws_invalid_argument)
 {
-	ASSERT_THROW(w::from_roman(GetParam()), std::invalid_argument);
+	ASSERT_THROW(w::from_roman(GetParam()), s::invalid_argument);
 }
 
 using InvalidIntegerFixture = t::TestWithParam<int>;
 TEST_P(InvalidIntegerFixture, throws_invalid_argument)
 {
-	ASSERT_THROW(w::to_roman(GetParam()), std::invalid_argument);
+	ASSERT_THROW(w::to_roman(GetParam()), s::invalid_argument);
 }
 
 using ConversionParams = s::tuple<int, char const*>;
@@ -46,7 +46,9 @@ INSTANTIATE_TEST_SUITE_P(
 	InvalidIntegerFixture,
 	t::Values(0, 4000, 65536, -100));
 
-constexpr auto cp(int const value, char const* const roman) { return ConversionParams{ value, roman }; }
+constexpr ConversionParams cp(int const value, char const* const roman) {
+	return { value, roman };
+}
 INSTANTIATE_TEST_SUITE_P(
 	RomanNumeralConverterTest,
 	RomanNumeralConversionFixture,
