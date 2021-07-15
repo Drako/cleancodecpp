@@ -66,6 +66,6 @@ Details should depend on abstractions.
 
  * RAII - Resource Acquisition Is Initialization
  * Const Correctness
- * Avoid raw new
+ * Avoid raw new, never use raw delete
  * Rule of 3/5/0
  * Avoid shared mutable state
