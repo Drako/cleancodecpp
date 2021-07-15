@@ -26,16 +26,16 @@ class StdRandomNumberGenerator final : public RandomNumberGenerator {
 public:
 	constexpr static int const MIN_VALUE = 1;
 	constexpr static int const MAX_VALUE = 100;
-
-	int getNextNumber() override {
+	
+	inline int getNextNumber() override {
 		return dist(generator);
 	};
 
-	int getMinValue() const override {
+	inline int getMinValue() const override {
 		return MIN_VALUE;
 	}
 
-	int getMaxValue() const override {
+	inline int getMaxValue() const override {
 		return MAX_VALUE;
 	}
 

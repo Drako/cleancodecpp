@@ -1,6 +1,8 @@
 add_executable(GuessTheNumberTests
 	GuessTheNumberTest.cxx
+	ConsoleUserInterfaceTest.cxx
 	MockRandomNumberGenerator.hxx
+	MockUserInterface.hxx
 	)
 target_link_libraries(GuessTheNumberTests PRIVATE
 	GuessTheNumberImpl

@@ -2,6 +2,7 @@
 
 #include "CheckResult.hxx"
 #include "RandomNumberGenerator.hxx"
+#include "UserInterface.hxx"
 
 #include <random>
 
@@ -11,7 +12,10 @@
 class GuessTheNumber
 {
 public:
-	GuessTheNumber(RandomNumberGenerator& rng);
+	GuessTheNumber(
+		RandomNumberGenerator& rng,
+		UserInterface& ui
+	);
 
 	// Main
 	void run();
@@ -20,12 +24,7 @@ public:
 	void playSingleGame();
 	CheckResult checkGuess(int guess, int number);
 
-	// User-Interface I/O
-	int requestGuess(int tries);
-	void showIntro();
-	bool keepRunning();
-	void printResult(int number, int tries, CheckResult result);
-
 private:
 	RandomNumberGenerator& rng;
+	UserInterface& ui;
 };

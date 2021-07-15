@@ -5,6 +5,7 @@
 #include <tuple>
 
 #include "MockRandomNumberGenerator.hxx"
+#include "MockUserInterface.hxx"
 
 /*
 TEST(GuessTheNumberTest, answerIs42) {
@@ -24,12 +25,40 @@ class GuessTheNumberTest : public ::testing::Test {
 public:
 	// shared init
 	MockRandomNumberGenerator rng;
-	GuessTheNumber game{ rng };
+	MockUserInterface ui;
+	GuessTheNumber game{ rng, ui };
 };
 
-TEST_F(GuessTheNumberTest, showIntroCanBeRun) {
-	EXPECT_NO_FATAL_FAILURE(game.showIntro());
+TEST_F(GuessTheNumberTest, playSingleGame) {
+	using namespace testing;
+	constexpr static int const NUMBER = 23;
+	constexpr static int const NUM_TRIES = 4;
+
+	EXPECT_CALL(ui, showIntro(Eq(std::ref(rng))));
+	EXPECT_CALL(rng, getNextNumber())
+		.WillOnce(Return(NUMBER));
+
+	int const tries[NUM_TRIES]{ 50, 25, 20, 23 };
+	EXPECT_CALL(ui, requestGuess(_))
+		.WillRepeatedly([&tries](int currentTry) {
+		EXPECT_LT(currentTry, NUM_TRIES + 1);
+		return tries[currentTry - 1];
+	});
+
+	EXPECT_CALL(ui, showResult(NUMBER, 1, CheckResult::Less));
+	EXPECT_CALL(ui, showResult(NUMBER, 2, CheckResult::Less));
+	EXPECT_CALL(ui, showResult(NUMBER, 3, CheckResult::Greater));
+	EXPECT_CALL(ui, showResult(NUMBER, 4, CheckResult::Equal));
+
+	// test
+	game.playSingleGame();
 }
+
+/* obsolete after moving showIntro into UserInterface class
+TEST_F(GuessTheNumberTest, showIntroCanBeRun) {
+	EXPECT_NO_FATAL_FAILURE(game.showIntro(rng));
+}
+*/
 
 // Marker for set of parameters
 struct NumberFoundParameters : GuessTheNumberTest
@@ -59,7 +88,7 @@ struct NumberGreaterThanGuessParameters : GuessTheNumberTest
 */
 
 TEST_P(NumberLessThanGuessParameters, numberLessThanGuessShouldYieldLess) {
-	auto const [number, guess] = GetParam();
+	auto const[number, guess] = GetParam();
 	EXPECT_EQ(CheckResult::Less, game.checkGuess(guess, number));
 }
 
