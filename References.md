@@ -30,4 +30,11 @@
 ## Other
 
 * [CMake: FetchContent (for dependencies)](https://cmake.org/cmake/help/latest/module/FetchContent.html)
+
+## For exercising
+
 * [Code Dojos & Katas](https://ccd-school.de/coding-dojo/)
+* [Code Wars](https://www.codewars.com)
+* [Codingame](https://www.codingame.com)
+* [Exercism](https://exercism.io)
+* [Top Coder](https://www.topcoder.com)
