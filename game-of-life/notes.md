@@ -13,6 +13,7 @@ struct World final {
 
 // I/O
 struct UserInterface // interface
+ virtual ~UserInterface() noexcept = default;
 class ConsoleUserInterface
 
 // Spiellogik/Regeln
