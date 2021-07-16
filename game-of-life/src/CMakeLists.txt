@@ -8,7 +8,6 @@ add_library(GameOfLifeImpl SHARED
 )
 target_compile_definitions(GameOfLifeImpl PRIVATE BUILD_DLL=1)
 target_include_directories(GameOfLifeImpl PUBLIC "${CMAKE_CURRENT_INCLUDE_DIR}")
-target_link_libraries(GameOfLifeImpl PUBLIC CONAN_PKG::boost)
 
 add_executable(GameOfLife main.cxx)
 target_link_libraries(GameOfLife PRIVATE

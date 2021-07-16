@@ -11,6 +11,5 @@ target_include_directories(GuessTheNumberImpl INTERFACE "${CMAKE_CURRENT_SOURCE_
 add_executable(GuessTheNumber main.cxx)
 target_link_libraries(GuessTheNumber PRIVATE
 	GuessTheNumberImpl
-	CONAN_PKG::boost
 	Boost::DI
 )
