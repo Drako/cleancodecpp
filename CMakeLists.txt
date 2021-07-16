@@ -11,6 +11,7 @@ conan_basic_setup(TARGETS)
 
 enable_testing()
 
+add_subdirectory(extern)
 add_subdirectory(guess-the-number)
 add_subdirectory(gilded-rose)
 add_subdirectory(roman-numeral-converter)
