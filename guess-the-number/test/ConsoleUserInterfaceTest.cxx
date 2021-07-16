@@ -14,7 +14,7 @@ class ConsoleUserInterfaceTest : public t::Test {
 public:
 	std::ostringstream out;
 	std::istringstream in;
-	ConsoleUserInterface ui{ out, in };
+	ConsoleUserInterface ui{ out, in, InputPolicy::DONT_RESET };
 };
 
 using ShowIntroParameters = std::tuple<int, int, char const*>;
@@ -67,7 +67,7 @@ INSTANTIATE_TEST_SUITE_P(
 	ConsoleUserInterfaceTest,
 	KeepRunningTest,
 	t::Values(
-		// std::make_tuple("yes", true),
+		std::make_tuple("yes", true),
 		std::make_tuple("no", false),
 		std::make_tuple("", false),
 		std::make_tuple("1234567890", false),

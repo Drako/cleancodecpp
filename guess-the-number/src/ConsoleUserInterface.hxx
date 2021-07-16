@@ -5,9 +5,17 @@
 
 #include <iosfwd>
 
-class ConsoleUserInterface final : public UserInterface {
+enum class InputPolicy {
+	RESET,
+	DONT_RESET,
+};
+
+class ConsoleUserInterface : public UserInterface {
 public:
-	ConsoleUserInterface(std::ostream& out, std::istream& in);
+	ConsoleUserInterface(
+		std::ostream& out, std::istream& in,
+		InputPolicy inputPolicy = InputPolicy::RESET
+	);
 
 	int requestGuess(int tries) override;
 	bool keepRunning() override;
@@ -18,4 +26,7 @@ public:
 private:
 	std::ostream& out;
 	std::istream& in;
+	InputPolicy inputPolicy;
+
+	void resetInput();
 };
