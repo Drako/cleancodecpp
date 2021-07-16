@@ -27,6 +27,7 @@ namespace {
 
 	// IIFE - Immediatly Invoked Function Expression
 	regex const ROMAN_NUMERAL_PATTERN = []() {
+		// this regex fails to detect invalid inputs like CDC CMC IXI IVI etc.
 		string pattern{"^"};
 		for (auto const[prefix, _] : mapping) {
 			if (prefix.size() == 1) {
@@ -62,6 +63,7 @@ namespace {
 		}
 	}
 
+	// works on all good cases, but fails to detect certain invalid inputs
 	int from_roman_faulty(string_view roman) {
 		int result{ 0 };
 		for (auto const[prefix, arabic] : mapping) {
@@ -80,7 +82,9 @@ namespace {
 		return result;
 	}
 
-	int from_roman_with_regex(string_view roman) {
+	// works on all good cases, but fails to detect certain invalid inputs
+	// could work with better regex, but that would be rather complex
+	int from_roman_faulty_with_regex(string_view roman) {
 		if (!regex_match(begin(roman), end(roman), ROMAN_NUMERAL_PATTERN)) {
 			throw invalid_argument{ "value is not a valid Roman numeral" };
 		}
