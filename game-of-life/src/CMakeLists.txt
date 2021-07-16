@@ -1,5 +1,17 @@
+add_library(GameOfLifeImpl SHARED
+	CellState.hxx
+	ConsoleUserInterface.cxx ConsoleUserInterface.hxx
+	Game.hxx Game.cxx
+	UserInterface.hxx
+	World.cxx World.hxx
+	DllInterface.hxx
+)
+target_compile_definitions(GameOfLifeImpl PRIVATE BUILD_DLL=1)
+target_include_directories(GameOfLifeImpl PUBLIC "${CMAKE_CURRENT_INCLUDE_DIR}")
+target_link_libraries(GameOfLifeImpl PUBLIC CONAN_PKG::boost)
+
 add_executable(GameOfLife main.cxx)
 target_link_libraries(GameOfLife PRIVATE
-	CONAN_PKG::boost
+	GameOfLifeImpl
 	Boost::DI
 )
