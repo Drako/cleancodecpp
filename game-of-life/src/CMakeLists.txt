@@ -5,6 +5,8 @@ add_library(GameOfLifeImpl SHARED
 	UserInterface.hxx
 	World.cxx World.hxx
 	DllInterface.hxx
+	Randomizer.hxx
+	StdRandomizer.cxx StdRandomizer.hxx
 )
 target_compile_definitions(GameOfLifeImpl PRIVATE BUILD_DLL=1)
 target_include_directories(GameOfLifeImpl PUBLIC "${CMAKE_CURRENT_INCLUDE_DIR}")
