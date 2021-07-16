@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Randomizer.hxx"
+#include <Randomizer.hxx>
 
 #include <gmock/gmock.h>
 
