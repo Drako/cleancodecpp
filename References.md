@@ -8,6 +8,7 @@
 
 ## Testing with C++
 * [gtest/gmock - Complete testing & mocking framework](https://github.com/google/googletest)
+* [gtest/gmock Documentation](http://google.github.io/googletest/)
 * [Catch2 - Unit testing framework](https://github.com/catchorg/Catch2)
 * [Hippomocks - Single-header mocking framework](https://github.com/dascandy/hippomocks)
 

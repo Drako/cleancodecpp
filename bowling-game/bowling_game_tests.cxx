@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
 #include "bowling_game.hxx"
-#include "bowling_game_tests.h"
 
 // #define UNUSED(x) ((void)x)
 
