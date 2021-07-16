@@ -16,6 +16,11 @@ namespace gol {
 	constexpr static int const MIN_CELLS = 100;
 	constexpr static int const MIN_DIMENSION = 3;
 
+	// di::bind<Width>.to(std::atoi(argv[1])),
+	// di::bind<Height>.to(std::atoi(argv[2]))
+
+	// World world{{atoi(argv[1])}, {atoi(argv[2])}};
+
 	class GOL_DLL_INTERFACE World final {
 	public:
 		/**

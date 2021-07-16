@@ -1,9 +1,10 @@
 #pragma once
 
 #include "DllInterface.hxx"
-#include "World.hxx"
 
 namespace gol {
+	class World;
+
 	struct GOL_DLL_INTERFACE Randomizer {
 		virtual ~Randomizer() noexcept = default;
 
