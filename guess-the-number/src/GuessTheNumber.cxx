@@ -3,42 +3,45 @@
 #include <iostream>
 #include <string>
 
-GuessTheNumber::GuessTheNumber(
-	RandomNumberGenerator& rng,
-	UserInterface& ui
-)
-	: rng{ rng }, ui{ ui }
-{
-}
-
 void GuessTheNumber::run() {
-	do {
-		playSingleGame();
-	} while (ui.keepRunning());
-}
+	bool keepRunning = true;
+	while (keepRunning) {
+		std::cout << "Guess the number (between 1 and 100):\n";
 
-void GuessTheNumber::playSingleGame()
-{
-	ui.showIntro(rng);
+		int const number = dist(generator);
+		int tries = 0;
 
-	int const number = rng.getNextNumber();
-	int tries = 0;
+		for (;;) {
+			++tries;
+			int guess;
 
-	for (;;) {
-		++tries;
+			do {
+				std::cout << "Guess #" << tries << ": ";
+				std::cin.clear();
+				std::cin.ignore(std::cin.rdbuf()->in_avail());
+			} while (!(std::cin >> guess));
 
-		int const guess = ui.requestGuess(tries);
+			if (guess == number) {
+				std::cout << "Congratulations, you found the number "
+					<< number << " after " << tries << " tries.\n";
+				break;
+			}
+			else if (guess < number) {
+				std::cout << "The searched number is greater than your guess.\n";
+			}
+			else {
+				std::cout << "The searched number is less than your guess.\n";
+			}
+		}
 
-		CheckResult const result = checkGuess(guess, number);
-		ui.showResult(number, tries, result);
-		if (result == CheckResult::Equal) break;
+		std::cout << "Play again? (yes/no)\n";
+		std::string response;
+		std::cin.clear();
+		std::cin.ignore(std::cin.rdbuf()->in_avail());
+		std::getline(std::cin, response);
+
+		if (response != "yes") {
+			keepRunning = false;
+		}
 	}
-}
-
-CheckResult GuessTheNumber::checkGuess(int const guess, int const number)
-{
-	return
-		guess == number ? CheckResult::Equal :
-		guess < number ? CheckResult::Greater :
-		CheckResult::Less;
 }

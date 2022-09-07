@@ -1,188 +1,85 @@
-#include <memory>
+// Rule of 0: A class should not have any of destructor/assignment operator/copy constructor
 
-
-int a = 0;
-
-struct Foo {
-	std::unique_ptr<int> a;
-	std::unique_ptr<int> b;
+template<typename T>
+struct Point final
+{
+  T x;
+  T y;
 };
 
-// could leak memory if after new int an exception is thrown
-std::unique_ptr<Foo> ptr{ new Foo {
-	std::unique_ptr<int>{new int{23}},
-	std::unique_ptr<int>{new int{42}}
-} };
+// Rule of 3: A class with a custom destructor SHOULD also have a custom assignment operator AND copy constructor.
+// The existence of a custom destructor usually implies some kind of resource management,
+// in turn in most cases assignment operator and copy constructor also need to be defined to take care of that.
+// Explicitly deleting assignment operator and copy constructor is a valid path here.
 
-struct Holder {
-	int* data;
-	int refCount;
-	int weakCount;
-};
-
-struct WeakPtr {
-	Holder * holder;
-
-	bool isValid() const {
-		return holder->refCount > 0;
-	}
-
-	WeakPtr(Holder * holder) : holder{ holder } {
-		++holder->weakCount;
-	}
-
-	~WeakPtr() {
-		--holder->weakCount;
-		if (holder->weakCount == 0) {
-			delete holder;
-		}
-	}
-};
-
-// 0 3 5 rule
-
-// 0 = no dtor
-// 3 = dtor + copy ctor + copy assign
-// 5 = dtor + copy ctor + copy assign + move ctor + move assign
-struct UniquePtr {
-	~UniquePtr() {
-		// delete
-	}
-
-	UniquePtr(UniquePtr const&) = delete;
-	UniquePtr & operator = (UniquePtr const&) = delete;
-
-	UniquePtr(UniquePtr&&) = delete;
-	UniquePtr & operator = (UniquePtr&&) = delete;
-};
-
-struct SharedPtr {
-
-	Holder* holder;
-
-	//SharedPtr(int* ptr) : holder{ new Holder{ptr, 1, 0} };
-
-	// dtor
-	// copy ctor/copy assignment
-	// seit C++11
-	// move ctor/move assignment
-
-	SharedPtr(SharedPtr const& src) : holder{ src.holder } {
-		++holder->refCount;
-	}
-
-	~SharedPtr() {
-		--holder->refCount;
-		if (holder->refCount == 0) {
-			delete holder->data;
-		}
-		if (holder->weakCount == 0) {
-			delete holder;
-		}
-	}
-
-	WeakPtr getWeak() const {
-		return { holder };
-	}
-};
-
-struct List {
-	struct Item {
-		int value;
-		std::shared_ptr<Item> next;
-		std::weak_ptr<Item> prev;
-	};
-};
-
-// circular dependencies
-std::shared_ptr<T>
-std::weak_ptr<T>
-
-std::unique_ptr<T>
-T*
-
-// safe against exceptions
-std::make_unique<Foo>(std::make_unique<int>(23), std::make_unique<int>(42));
-
-std::unique_ptr<int> ptr = std::make_unique<int>(23);
-std::shared_ptr<int>;
-
-class Point final {
-	int x, y;
+template<typename Mtx>
+class ScopedLock final
+{
+  Mtx &_mtx;
 
 public:
-	int& getX();
-	int getX() const;
+  explicit ScopedLock(Mtx &mtx)
+    : _mtx{mtx}
+  {
+    _mtx.lock();
+  }
+
+  ~ScopedLock()
+  {
+    _mtx.unlock();
+  }
+
+  ScopedLock(ScopedLock const &) = delete;
+  ScopedLock &operator=(ScopedLock const &) = delete;
 };
 
-#include <mutex>
+// Rule of 5: A class with a custom destructor SHOULD also have a custom copy-assignment & move-assignment operator AND copy-constructor & move-constructor.
+// This is an extension to the old rule of three. While the default move-assignment and move-construction just forward to the respective copies,
+// in cases where we have a custom destructor, we usually also want a different move behaviour.
+// For types that should be neither copyable nor movable, it suffices to delete the copy-constructor and copy-assignment operator.
 
-template <typename T>
-class Vector {
-	T*data;
-	int size;
-	int capacity;
-	mutable std::mutex mutex;
+#include <utility>
+
+template<typename T>
+class UniquePtr final
+{
+  T *_ptr;
+
+  void release()
+  {
+    delete _ptr;
+  }
 
 public:
-	Vector() {
+  explicit UniquePtr(T *ptr = nullptr)
+    : _ptr{ptr}
+  {}
 
-	}
+  ~UniquePtr()
+  {
+    release();
+  }
 
-	~Vector() {
-		delete[] data;
-	}
+  UniquePtr(UniquePtr const &) = delete;
+  UniquePtr &operator=(UniquePtr const &) = delete;
 
-	T& operator[](int index);
-	T const& operator[](int index) const {
-		std::lock_guard<std::mutex> lock{ mutex };
-	}
+  UniquePtr(UniquePtr &&src)
+    : _ptr{src._ptr}
+  {
+    src._ptr = nullptr;
+  }
+
+  UniquePtr &operator=(UniquePtr &&src)
+  {
+    // important: when implementing move-assignment, keep in mind to check for self-assignments
+    if (this == std::addressof(src)) {
+      return *this;
+    }
+
+    release();
+    _ptr = src._ptr;
+    src._ptr = nullptr;
+
+    return *this;
+  }
 };
-
-void foo() {
-	Point const p;
-	p.getX();
-
-	Vector<int> v{ 23, 42, 1337 };
-	v[10] = 23;
-}
-
-
-// konstanter Wert vom Typ T
-// T const
-// const T
-
-/*
-variabler Zeiger auf variablen Speicher
-T*
-
-variable Zeiger auf konstanten Speicher
-const T*
-T const*
-
-konstanten Zeiger auf variablen Speicher
-T* const
-
-konstanten Zeiger auf konstanten Speicher
-const T* const
-T const * const
-
-east-const/west-const
-
-T const ** const
-konstanten Zeiger auf einen variablen Zeiger auf konstanten Speicher
-*/
-
-// singleton bad
-
-/* bad example:
-// don't forget to reset
-bool useFile = false;
-void copy();
-*/
-
-/*
-immutable local  | mutable local
------------------+---------------
-immutable shared | mutable shared
-*/

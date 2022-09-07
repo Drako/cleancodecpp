@@ -1,12 +1,9 @@
 add_executable(GuessTheNumberTests
-	GuessTheNumberTest.cxx
-	ConsoleUserInterfaceTest.cxx
-	MockRandomNumberGenerator.hxx
-	MockUserInterface.hxx
-	)
+    GuessTheNumberTest.cxx
+    )
 target_link_libraries(GuessTheNumberTests PRIVATE
-	GuessTheNumberImpl
-	CONAN_PKG::gtest
-)
+    GuessTheNumberImpl
+    gtest gmock gmock_main
+    )
 
 add_test(NAME GuessTheNumberTests COMMAND GuessTheNumberTests)
