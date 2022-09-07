@@ -20,7 +20,7 @@
 
 ## Books
 
-* John Ousterhout: A philosphy of software design
+* John Ousterhout: A philosophy of software design
 * Michael C. Feathers: Working effectively with legacy code
 
 ## Videos
