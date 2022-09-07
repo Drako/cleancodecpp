@@ -1,6 +1,6 @@
 # About Me
 
- * Software Craftsmanship Coach, working in Chemnitz
+ * Senior C++ Developer @ Naventik, working in Chemnitz
  * using C++ since around 2005
  * visitor of conferences and meetups
  * open source contributor
