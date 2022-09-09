@@ -4,6 +4,6 @@
 #include <GuessTheNumber.hxx>
 
 TEST(GuessTheNumberTest, theGameWorks) {
-	GuessTheNumber game{};
+	// GuessTheNumber game{};
 	// now how do you test that?
 }

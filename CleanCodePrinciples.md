@@ -69,3 +69,7 @@ Details should depend on abstractions.
  * Avoid raw new, never use raw delete
  * Rule of 3/5/0
  * Avoid shared mutable state
+
+
+ private/mutable  |   private/immutable
+ shared/mutable   |   shared/immutable

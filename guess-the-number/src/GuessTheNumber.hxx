@@ -1,14 +1,20 @@
 #pragma once
 
-#include <random>
+#include "RandomNumberGenerator.hxx"
+#include "GameIO.hxx"
+
+#include <sdi/component.hxx>
 
 class GuessTheNumber
 {
 public:
-	void run();
+  using dependencies = sdi::dependencies<RandomNumberGenerator, GameIO>;
+
+  GuessTheNumber(RandomNumberGenerator &rng, GameIO &io);
+
+  void run();
 
 private:
-	std::random_device rd;
-	std::mt19937 generator{ rd() };
-	std::uniform_int_distribution<> dist{ 1, 100 };
+  RandomNumberGenerator &rng;
+  GameIO &io;
 };

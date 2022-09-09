@@ -1,5 +1,8 @@
 add_executable(GuessTheNumberTests
     GuessTheNumberTest.cxx
+    StdRandomNumberGeneratorTest.cxx
+    IODeviceMock.hxx
+    GuessTheNumberIOTest.cxx
     )
 target_link_libraries(GuessTheNumberTests PRIVATE
     GuessTheNumberImpl
